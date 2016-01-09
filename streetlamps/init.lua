@@ -121,8 +121,8 @@ minetest.register_node(":streets:streetlamp_basic_top_on",{
 minetest.register_craft({
 	output = "streets:streetlamp_basic_bottom",
 	recipe = {
-		{"","default:torch",""},
-		{"","default:stick",""},
-		{"","default:stick",""}
+		{"default:glass","default:torch","default:glass"},
+		{"","streets:bigpole",""},
+		{"","streets:bigpole",""}
 	}
 })
