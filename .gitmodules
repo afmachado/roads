@@ -1,3 +1,6 @@
 [submodule "streetsmod/libs/smartfs"]
 	path = streetsmod/libs/smartfs
 	url = https://github.com/rubenwardy/smartfs.git
+[submodule "infrastructure"]
+	path = infrastructure
+	url = https://github.com/cheapie/infrastructure
