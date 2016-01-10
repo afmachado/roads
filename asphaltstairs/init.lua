@@ -9,7 +9,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_solid_line_stair",{
 			description = streets.S("Asphalt stair"),
 			tiles = {"streets_asphalt.png^streets_asphalt_solid_line.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_solid_line.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -41,7 +41,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_solid_line_slab",{
 			description = streets.S("Asphalt slab"),
 			tiles = {"streets_asphalt.png^streets_asphalt_solid_line.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_solid_line.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -66,7 +66,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_dashed_line_stair",{
 			description = streets.S("Asphalt stair"),
 			tiles = {"streets_asphalt.png^streets_asphalt_dashed_line.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_dashed_line.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -98,7 +98,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_dashed_line_slab",{
 			description = streets.S("Asphalt slab"),
 			tiles = {"streets_asphalt.png^streets_asphalt_dashed_line.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_dashed_line.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -121,7 +121,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_side_stair_l",{
 			description = streets.S("Asphalt stair"),
 			tiles = {"streets_asphalt.png^streets_asphalt_side.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_side.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -136,7 +136,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_side_stair_r",{
 			description = streets.S(streets.S("Asphalt stair")),
 			tiles = {"streets_asphalt.png^streets_asphalt_side_r.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_side_r.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -179,7 +179,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_side_slab_l",{
 			description = streets.S(streets.S("Asphalt slab")),
 			tiles = {"streets_asphalt.png^streets_asphalt_side.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_side.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -193,7 +193,7 @@ or type(register_stair_slab_panel_micro) ~= "function" then return end
 		minetest.register_node(":streets:asphalt_side_slab_r",{
 			description = streets.S(streets.S("Asphalt slab")),
 			tiles = {"streets_asphalt.png^streets_asphalt_side_r.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^streets_asphalt_side_r.png"},
-			groups = {cracky = 3},
+			groups = {cracky = 3,not_in_creative_inventory=1},
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
