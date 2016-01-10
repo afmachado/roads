@@ -38,7 +38,7 @@ streets.register_label = function(friendlyname,name,tex,craft)
 	minetest.register_node(":streets:mark_"..name.."_on_asphalt",{
 		description = streets.S("Asphalt With Marking: "..friendlyname),
 		groups = {cracky=3},
-		tiles = {"streets_asphalt.png^"..tex,"streets_asphalt.png"},
+		tiles = {"streets_asphalt.png^"..tex,"streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^"..tex.."^[transformR180","streets_asphalt.png^"..tex},
 		paramtype2 = "facedir"
 	})
 
@@ -51,6 +51,12 @@ streets.register_label = function(friendlyname,name,tex,craft)
 	minetest.register_craft({
 		output = "streets:mark_"..name.." 6",
 		recipe = craft
+	})
+
+	stairsplus:register_all("streets", name, "streets:mark_"..name.."_on_asphalt", {
+		description = "Asphalt with Marking: "..name,
+		tiles = {"streets_asphalt.png^"..tex,"streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^"..tex.."^[transformR180","streets_asphalt.png^"..tex},
+		groups = {cracky=3}
 	})
 end
 
