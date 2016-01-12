@@ -28,8 +28,7 @@ streets.tlRhythm = {
 		{name = "streets:trafficlight_top_green", pauseBefore = 1.5}
 	},
 	toOff = {
-		{name = "streets:trafficlight_top_warn", pauseBefore = 0},
-		{name = "streets:trafficlight_top_off", pauseBefore = 5}
+		{name = "streets:trafficlight_top_off", pauseBefore = 0}
 	},
 	toWarn = {
 		{name = "streets:trafficlight_top_warn", pauseBefore = 0}
@@ -49,8 +48,7 @@ streets.tlRhythm_left = {
 		{name = "streets:trafficlight_top_left_green", pauseBefore = 1.5}
 	},
 	toOff = {
-		{name = "streets:trafficlight_top_left_warn", pauseBefore = 0},
-		{name = "streets:trafficlight_top_left_off", pauseBefore = 5}
+		{name = "streets:trafficlight_top_left_off", pauseBefore = 0}
 	},
 	toWarn = {
 		{name = "streets:trafficlight_top_left_warn", pauseBefore = 0}
@@ -70,8 +68,7 @@ streets.tlRhythm_right = {
 		{name = "streets:trafficlight_top_right_green", pauseBefore = 1.5}
 	},
 	toOff = {
-		{name = "streets:trafficlight_top_right_warn", pauseBefore = 0},
-		{name = "streets:trafficlight_top_right_off", pauseBefore = 5}
+		{name = "streets:trafficlight_top_right_off", pauseBefore = 0}
 	},
 	toWarn = {
 		{name = "streets:trafficlight_top_right_warn", pauseBefore = 0}
