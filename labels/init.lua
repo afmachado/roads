@@ -52,12 +52,13 @@ streets.register_label = function(friendlyname,name,tex,craft)
 		output = "streets:mark_"..name.." 6",
 		recipe = craft
 	})
-
-	stairsplus:register_all("streets", name, "streets:mark_"..name.."_on_asphalt", {
-		description = "Asphalt with Marking: "..friendlyname,
-		tiles = {"streets_asphalt.png^"..tex,"streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^"..tex.."^[transformR180","streets_asphalt.png^"..tex},
-		groups = {cracky=3}
-	})
+	if minetest.get_modpath("moreblocks") then
+		stairsplus:register_all("streets", name, "streets:mark_"..name.."_on_asphalt", {
+			description = "Asphalt with Marking: "..friendlyname,
+			tiles = {"streets_asphalt.png^"..tex,"streets_asphalt.png","streets_asphalt.png","streets_asphalt.png","streets_asphalt.png^"..tex.."^[transformR180","streets_asphalt.png^"..tex},
+			groups = {cracky=3}
+		})
+	end
 end
 
 
