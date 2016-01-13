@@ -1,3 +1,5 @@
+infrastructure = {}
+
 -- Load settings
 dofile(minetest.get_modpath("infrastructure").."/settings.lua")
 
