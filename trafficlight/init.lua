@@ -24,8 +24,7 @@ streets.tlRhythm = {
 		{name = "streets:trafficlight_top_red", pauseBefore = 3}
 	},
 	toGreen = {
-		{name = "streets:trafficlight_top_redyellow", pauseBefore = 0},
-		{name = "streets:trafficlight_top_green", pauseBefore = 1.5}
+		{name = "streets:trafficlight_top_green", pauseBefore = 0}
 	},
 	toOff = {
 		{name = "streets:trafficlight_top_off", pauseBefore = 0}
@@ -44,8 +43,7 @@ streets.tlRhythm_left = {
 		{name = "streets:trafficlight_top_left_red", pauseBefore = 3}
 	},
 	toGreen = {
-		{name = "streets:trafficlight_top_left_redyellow", pauseBefore = 0},
-		{name = "streets:trafficlight_top_left_green", pauseBefore = 1.5}
+		{name = "streets:trafficlight_top_left_green", pauseBefore = 0}
 	},
 	toOff = {
 		{name = "streets:trafficlight_top_left_off", pauseBefore = 0}
@@ -64,8 +62,7 @@ streets.tlRhythm_right = {
 		{name = "streets:trafficlight_top_right_red", pauseBefore = 3}
 	},
 	toGreen = {
-		{name = "streets:trafficlight_top_right_redyellow", pauseBefore = 0},
-		{name = "streets:trafficlight_top_right_green", pauseBefore = 1.5}
+		{name = "streets:trafficlight_top_right_green", pauseBefore = 0}
 	},
 	toOff = {
 		{name = "streets:trafficlight_top_right_off", pauseBefore = 0}
@@ -255,28 +252,7 @@ for _,i in pairs({"","_left","_right"}) do
 		},
 	})
 
-	minetest.register_node(":streets:trafficlight_top"..i.."_redyellow",{
-		drop = "streets:trafficlight_top_off",
-		groups = {cracky = 1, not_in_creative_inventory = 1},
-		paramtype = "light",
-		paramtype2 = "facedir",
-		sunlight_propagates = true,
-		drawtype = "nodebox",
-		tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl"..i.."_redyellow.png"},
-		node_box = {
-			type = "fixed",
-			fixed = streets.tlBox
-		},
-		light_source = 6,
-		digiline = {
-			receptor = {},
-			effector = {
-				action = function(pos, node, channel, msg)
-					streets.on_digiline_receive(pos, node, channel, msg)
-				end
-			}
-		},
-	})
+	minetest.register_alias("streets:trafficlight_top"..i.."_redyellow","streets:trafficlight_top"..i.."_green")
 
 	minetest.register_node(":streets:trafficlight_top"..i.."_green",{
 		drop = "streets:trafficlight_top_off",
