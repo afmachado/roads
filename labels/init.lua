@@ -64,9 +64,9 @@ end
 
 --White Markings
 streets.register_label("Solid White Side Line","solid_white_side_line","streets_asphalt_side.png",{
-		{"dye:white","",""},
-		{"dye:white","",""},
-		{"dye:white","",""}
+		{"","",""},
+		{"","",""},
+		{"dye:white","dye:white","dye:white"}
 	})
 
 minetest.register_alias("streets:asphalt_side","streets:mark_solid_white_side_line_on_asphalt")
