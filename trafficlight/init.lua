@@ -286,7 +286,7 @@ for _,i in pairs({"","_left","_right"}) do
 		drawtype = "nodebox",
 		tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png",{
 			name="streets_tl"..i.."_warn.png",
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=1.5},
+			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=1.2},
 		}},
 		node_box = {
 			type = "fixed",
@@ -312,7 +312,7 @@ for _,i in pairs({"","_left","_right"}) do
 		drawtype = "nodebox",
 		tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png",{
 			name="streets_tl"..i.."_flashred.png",
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=1.5},
+			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=1.2},
 		}},
 		node_box = {
 			type = "fixed",
