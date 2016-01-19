@@ -207,7 +207,7 @@ for _,i in pairs({"","_left","_right"}) do
 	})
 
 	minetest.register_node(":streets:trafficlight_top"..i.."_red",{
-		drop = "streets:trafficlight_top_off",
+		drop = "streets:trafficlight_top"..i.."_off",
 		groups = {cracky = 1, not_in_creative_inventory = 1},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -230,7 +230,7 @@ for _,i in pairs({"","_left","_right"}) do
 	})
 
 	minetest.register_node(":streets:trafficlight_top"..i.."_yellow",{
-		drop = "streets:trafficlight_top_off",
+		drop = "streets:trafficlight_top"..i.."_off",
 		groups = {cracky = 1, not_in_creative_inventory = 1},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -255,7 +255,7 @@ for _,i in pairs({"","_left","_right"}) do
 	minetest.register_alias("streets:trafficlight_top"..i.."_redyellow","streets:trafficlight_top"..i.."_green")
 
 	minetest.register_node(":streets:trafficlight_top"..i.."_green",{
-		drop = "streets:trafficlight_top_off",
+		drop = "streets:trafficlight_top"..i.."_off",
 		groups = {cracky = 1, not_in_creative_inventory = 1},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -278,7 +278,7 @@ for _,i in pairs({"","_left","_right"}) do
 	})
 
 	minetest.register_node(":streets:trafficlight_top"..i.."_warn",{
-		drop = "streets:trafficlight_top_off",
+		drop = "streets:trafficlight_top"..i.."_off",
 		groups = {cracky = 1, not_in_creative_inventory = 1},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -304,7 +304,7 @@ for _,i in pairs({"","_left","_right"}) do
 	})
 
 	minetest.register_node(":streets:trafficlight_top"..i.."_flashred",{
-		drop = "streets:trafficlight_top_off",
+		drop = "streets:trafficlight_top"..i.."_off",
 		groups = {cracky = 1, not_in_creative_inventory = 1},
 		paramtype = "light",
 		paramtype2 = "facedir",
