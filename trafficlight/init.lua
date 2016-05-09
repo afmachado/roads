@@ -20,8 +20,10 @@ streets.tlBox =	{
 
 streets.tlRhythm = {
 	toRed = {
-		{name = "streets:trafficlight_top_yellow", pauseBefore = 0},
-		{name = "streets:trafficlight_top_red", pauseBefore = 3}
+		{name = "streets:trafficlight_top_red", pauseBefore = 0}
+	},
+	toYellow = {
+		{name = "streets:trafficlight_top_yellow", pauseBefore = 0}
 	},
 	toGreen = {
 		{name = "streets:trafficlight_top_green", pauseBefore = 0}
@@ -39,8 +41,10 @@ streets.tlRhythm = {
 
 streets.tlRhythm_left = {
 	toRed = {
-		{name = "streets:trafficlight_top_left_yellow", pauseBefore = 0},
-		{name = "streets:trafficlight_top_left_red", pauseBefore = 3}
+		{name = "streets:trafficlight_top_left_red", pauseBefore = 0}
+	},
+	toYellow = {
+		{name = "streets:trafficlight_top_left_yellow", pauseBefore = 0}
 	},
 	toGreen = {
 		{name = "streets:trafficlight_top_left_green", pauseBefore = 0}
@@ -58,8 +62,10 @@ streets.tlRhythm_left = {
 
 streets.tlRhythm_right = {
 	toRed = {
-		{name = "streets:trafficlight_top_right_yellow", pauseBefore = 0},
-		{name = "streets:trafficlight_top_right_red", pauseBefore = 3}
+		{name = "streets:trafficlight_top_right_red", pauseBefore = 0}
+	},
+	toYellow = {
+		{name = "streets:trafficlight_top_right_yellow", pauseBefore = 0}
 	},
 	toGreen = {
 		{name = "streets:trafficlight_top_right_green", pauseBefore = 0}
@@ -130,6 +136,16 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		streets.tlSwitch({
 			pos = pos,
 			to = "toWarn"
+		})
+	elseif msg == "FLASHYELLOW" then
+		streets.tlSwitch({
+			pos = pos,
+			to = "toWarn"
+		})
+	elseif msg == "YELLOW" then
+		streets.tlSwitch({
+			pos = pos,
+			to = "toYellow"
 		})
 	elseif msg == "FLASHRED" then
 		streets.tlSwitch({
