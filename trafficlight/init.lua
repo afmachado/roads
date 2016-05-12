@@ -35,114 +35,11 @@ streets.plBox =	{
 	{0.1875,-0.0625,0.3125,0.1375,-0.4375,0.5}, --Bottom Visor, Right
 }
 
-streets.plRhythm = {
-	toRed = {
-		{name = "streets:pedlight_top_dontwalk", pauseBefore = 0}
-	},
-	toFlashRed = {
-		{name = "streets:pedlight_top_flashingdontwalk", pauseBefore = 0}
-	},
-	toGreen = {
-		{name = "streets:pedlight_top_walk", pauseBefore = 0}
-	},
-	toOff = {
-		{name = "streets:pedlight_top_off", pauseBefore = 0}
-	},
-}
-
-streets.tlRhythm = {
-	toRed = {
-		{name = "streets:trafficlight_top_red", pauseBefore = 0}
-	},
-	toYellow = {
-		{name = "streets:trafficlight_top_yellow", pauseBefore = 0}
-	},
-	toGreen = {
-		{name = "streets:trafficlight_top_green", pauseBefore = 0}
-	},
-	toOff = {
-		{name = "streets:trafficlight_top_off", pauseBefore = 0}
-	},
-	toWarn = {
-		{name = "streets:trafficlight_top_warn", pauseBefore = 0}
-	},
-	toFlashRed = {
-		{name = "streets:trafficlight_top_flashred", pauseBefore = 0}
-	}
-}
-
-streets.tlRhythm_left = {
-	toRed = {
-		{name = "streets:trafficlight_top_left_red", pauseBefore = 0}
-	},
-	toYellow = {
-		{name = "streets:trafficlight_top_left_yellow", pauseBefore = 0}
-	},
-	toGreen = {
-		{name = "streets:trafficlight_top_left_green", pauseBefore = 0}
-	},
-	toOff = {
-		{name = "streets:trafficlight_top_left_off", pauseBefore = 0}
-	},
-	toWarn = {
-		{name = "streets:trafficlight_top_left_warn", pauseBefore = 0}
-	},
-	toFlashRed = {
-		{name = "streets:trafficlight_top_left_flashred", pauseBefore = 0}
-	}
-}
-
-streets.tlRhythm_right = {
-	toRed = {
-		{name = "streets:trafficlight_top_right_red", pauseBefore = 0}
-	},
-	toYellow = {
-		{name = "streets:trafficlight_top_right_yellow", pauseBefore = 0}
-	},
-	toGreen = {
-		{name = "streets:trafficlight_top_right_green", pauseBefore = 0}
-	},
-	toOff = {
-		{name = "streets:trafficlight_top_right_off", pauseBefore = 0}
-	},
-	toWarn = {
-		{name = "streets:trafficlight_top_right_warn", pauseBefore = 0}
-	},
-	toFlashRed = {
-		{name = "streets:trafficlight_top_right_flashred", pauseBefore = 0}
-	}
-}
-
-streets.tlSwitch = function(def)
-	if not def.pos or not def.to then
+streets.tlSwitch = function(pos,to)
+	if not pos or not to then
 		return
 	end
-	local rhythm = {}
-	local nodename = minetest.get_node(def.pos).name
-	if nodename:find("pedlight") then
-		rhythm = streets.plRhythm
-	elseif nodename:find("left") then
-		rhythm = streets.tlRhythm_left
-	elseif nodename:find("right") then
-		rhythm = streets.tlRhythm_right
-	else
-		rhythm = streets.tlRhythm
-	end
-	if not rhythm[def.to] then
-		return
-	end
-	local meta = minetest.get_meta(def.pos)
-	-- Only switch if new state ~= current state
-	if "to" .. meta:get_string("state") == def.to then
-		return
-	end
-	-- Switch the trafficlight
-	for k, v in pairs(rhythm[def.to]) do
-		minetest.get_meta(def.pos):set_string("state", def.to:gsub("to", ""))
-		minetest.after(v.pauseBefore, function()
-			minetest.swap_node(def.pos, {name = v.name, param2 = minetest.get_node(def.pos).param2})
-		end)
-	end
+	minetest.swap_node(pos, {name = to, param2 = minetest.get_node(pos).param2})
 end
 
 streets.on_digiline_receive = function(pos, node, channel, msg)
@@ -151,48 +48,77 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		return
 	end
 	-- Tl states
-	local ped = minetest.get_node(pos).name:find("pedlight")
+	local name = minetest.get_node(pos).name
 	if msg == "OFF" then
-		streets.tlSwitch({
-			pos = pos,
-			to = "toOff"
-		})
-	elseif msg == "GREEN" then
-		streets.tlSwitch({
-			pos = pos,
-			to = "toGreen"
-		})
-	elseif msg == "RED" then
-		streets.tlSwitch({
-			pos = pos,
-			to = "toRed"
-		})
-	elseif msg == "WARN" then
-		streets.tlSwitch({
-			pos = pos,
-			to = ped and "toFlashRed" or "toWarn"
-		})
-	elseif (not ped) and msg == "FLASHYELLOW" then
-		streets.tlSwitch({
-			pos = pos,
-			to = "toWarn"
-		})
-	elseif (not ped) and msg == "YELLOW" then
-		streets.tlSwitch({
-			pos = pos,
-			to = "toYellow"
-		})
-	elseif msg == "FLASHRED" then
-		streets.tlSwitch({
-			pos = pos,
-			to = "toFlashRed"
-		})
-	elseif msg == "GET" then
-		local state = minetest.get_meta(pos):get_string("state")
-		if not state or state == "" then
-			state = "UNDEFINED"
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_off")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_off")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_off")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_off")
 		end
-		digiline:receptor_send(pos, digiline.rules.default, channel, state)
+	elseif msg == "GREEN" then
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_walk")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_green")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_green")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_green")
+		end
+	elseif msg == "RED" then
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_dontwalk")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_red")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_red")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_red")
+		end
+	elseif msg == "WARN" then
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_warn")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_warn")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_warn")
+		end
+	elseif msg == "FLASHYELLOW" then
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_warn")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_warn")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_warn")
+		end
+	elseif msg == "YELLOW" then
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_yellow")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_yellow")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_yellow")
+		end
+	elseif msg == "FLASHRED" then
+		if name:find("pedlight") then
+			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
+		elseif name:find("left") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_left_flashred")
+		elseif name:find("right") then
+			streets.tlSwitch(pos,"streets:trafficlight_top_right_flashred")
+		else
+			streets.tlSwitch(pos,"streets:trafficlight_top_flashred")
+		end
 	end
 end
 
