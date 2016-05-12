@@ -711,6 +711,31 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "streets:pedlight_top_off",
+	recipe = {
+		{"default:steel_ingot", "dye:orange", "default:steel_ingot"},
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		{"default:steel_ingot", "dye:white", "default:steel_ingot"}
+	}
+})
+
+minetest.register_craft({
+	output = "streets:trafficlight_top_extender_left_off",
+	recipe = {
+		{"dye:yellow", "default:steel_ingot", "default:steel_ingot"},
+		{"dye:green", "default:steel_ingot", "default:steel_ingot"}
+	}
+})
+
+minetest.register_craft({
+	output = "streets:trafficlight_top_extender_right_off",
+	recipe = {
+		{"default:steel_ingot", "default:steel_ingot", "dye:yellow"},
+		{"default:steel_ingot", "default:steel_ingot", "dye:green"}
+	}
+})
+
+minetest.register_craft({
 	output = "streets:digiline_distributor",
 	recipe = {
 		{"", "digilines:wire_std_00000000", ""},
