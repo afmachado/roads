@@ -203,7 +203,7 @@ minetest.register_node(":streets:trafficlight_top_extender_left_off",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2},
-	inventory_image = "streets_trafficlight_inv.png",
+	inventory_image = "streets_trafficlight_inv_extender_left.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -239,7 +239,6 @@ minetest.register_node(":streets:trafficlight_top_extender_left_yellow",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
-	inventory_image = "streets_trafficlight_inv.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -275,7 +274,6 @@ minetest.register_node(":streets:trafficlight_top_extender_left_green",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
-	inventory_image = "streets_trafficlight_inv.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -310,7 +308,7 @@ minetest.register_node(":streets:trafficlight_top_extender_right_off",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2},
-	inventory_image = "streets_trafficlight_inv.png",
+	inventory_image = "streets_trafficlight_inv_extender_right.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -346,7 +344,6 @@ minetest.register_node(":streets:trafficlight_top_extender_right_yellow",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
-	inventory_image = "streets_trafficlight_inv.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -382,7 +379,6 @@ minetest.register_node(":streets:trafficlight_top_extender_right_green",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
-	inventory_image = "streets_trafficlight_inv.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -417,7 +413,7 @@ minetest.register_node(":streets:pedlight_top_off",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2},
-	inventory_image = "streets_trafficlight_inv.png",
+	inventory_image = "streets_pedlight_inv.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -529,7 +525,7 @@ for _,i in pairs({"","_left","_right"}) do
 		paramtype = "light",
 		paramtype2 = "facedir",
 		groups = {cracky = 1, level = 2},
-		inventory_image = "streets_trafficlight_inv.png",
+		inventory_image = ((i == "") and "streets_trafficlight_inv_straight.png") or ((i == "_left") and "streets_trafficlight_inv_left.png") or ((i == "_right") and "streets_trafficlight_inv_right.png"),
 		light_source = 11,
 		sunlight_propagates = true,
 		node_box = {
