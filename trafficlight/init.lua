@@ -227,7 +227,7 @@ minetest.register_node(":streets:beacon_off",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 1, level = 2},
-	inventory_image = "streets_trafficlight_inv.png",
+	inventory_image = "streets_beacon_inv.png",
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -257,12 +257,11 @@ minetest.register_node(":streets:beacon_off",{
 })
 
 minetest.register_node(":streets:beacon_flashred",{
-	description = "Beacon",
+	drop = "streets:beacon_off",
 	drawtype="nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = {cracky = 1, level = 2},
-	inventory_image = "streets_trafficlight_inv.png",
+	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -295,12 +294,11 @@ minetest.register_node(":streets:beacon_flashred",{
 })
 
 minetest.register_node(":streets:beacon_flashyellow",{
-	description = "Beacon",
+	drop = "streets:beacon_off",
 	drawtype="nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = {cracky = 1, level = 2},
-	inventory_image = "streets_trafficlight_inv.png",
+	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
 	light_source = 11,
 	sunlight_propagates = true,
 	node_box = {
@@ -867,6 +865,15 @@ minetest.register_craft({
 	recipe = {
 		{"default:steel_ingot", "default:steel_ingot", "dye:yellow"},
 		{"default:steel_ingot", "default:steel_ingot", "dye:green"}
+	}
+})
+
+minetest.register_craft({
+	output = "streets:beacon_off",
+	recipe = {
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		{"default:steel_ingot", "dye:red", "default:steel_ingot"},
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
 	}
 })
 
