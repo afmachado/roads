@@ -47,6 +47,16 @@ streets.plBox =	{
 	{0.1875,-0.0625,0.3125,0.1375,-0.4375,0.5}, --Bottom Visor, Right
 }
 
+streets.bBox =	{
+	{-0.1875,-0.1875,0.5,0.1875,0.1875,0.75}, --Box
+
+	{-0.125, -0.125, 0.85, 0.125, 0.125, 0.75}, -- Pole Mounting Bracket
+
+	{-0.125,0,0.3125,-0.0625,0.0625,0.5}, --Visor, Left
+	{-0.0625,0.0625,0.3125,0.0625,0.125,0.5}, --Visor, Center
+	{0.0625,0,0.3125,0.125,0.0625,0.5}, --Visor, Right
+}
+
 streets.tlDigilineRules = {
 				{x= 0, y= 0, z=-1},
 				{x= 0, y= 0, z= 1},
@@ -81,6 +91,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_off")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_off")
+		elseif name:find("beacon") then
+			streets.tlSwitch(pos,"streets:beacon_off")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_off")
 		end
@@ -95,6 +107,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_green")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_green")
+		elseif name:find("beacon") then
+			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_green")
 		end
@@ -109,6 +123,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_red")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_red")
+		elseif name:find("beacon") then
+			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_red")
 		end
@@ -123,6 +139,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_warn")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_warn")
+		elseif name:find("beacon") then
+			streets.tlSwitch(pos,"streets:beacon_flashyellow")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_warn")
 		end
@@ -137,6 +155,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_warn")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_warn")
+		elseif name:find("beacon") then
+			streets.tlSwitch(pos,"streets:beacon_flashyellow")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_warn")
 		end
@@ -151,6 +171,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_yellow")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_yellow")
+		elseif name:find("beacon") then
+			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_yellow")
 		end
@@ -165,6 +187,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:trafficlight_top_left_flashred")
 		elseif name:find("right") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_right_flashred")
+		elseif name:find("beacon") then
+			streets.tlSwitch(pos,"streets:beacon_flashred")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_flashred")
 		end
@@ -195,6 +219,117 @@ minetest.register_node(":streets:digiline_distributor",{
 			}
 		}
 	}
+})
+
+minetest.register_node(":streets:beacon_off",{
+	description = "Beacon",
+	drawtype="nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	groups = {cracky = 1, level = 2},
+	inventory_image = "streets_trafficlight_inv.png",
+	light_source = 11,
+	sunlight_propagates = true,
+	node_box = {
+		type = "fixed",
+		fixed = streets.bBox
+	},
+	tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_off.png"},
+	digiline = {
+		receptor = {},
+		wire = {rules=streets.tlDigilineRules},
+		effector = {
+			action = function(pos, node, channel, msg)
+				streets.on_digiline_receive(pos, node, channel, msg)
+			end
+		}
+	},
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", "field[channel;Channel;${channel}]")
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+			minetest.get_meta(pos):set_string("state", "Off")
+		end
+	end,
+})
+
+minetest.register_node(":streets:beacon_flashred",{
+	description = "Beacon",
+	drawtype="nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	groups = {cracky = 1, level = 2},
+	inventory_image = "streets_trafficlight_inv.png",
+	light_source = 11,
+	sunlight_propagates = true,
+	node_box = {
+		type = "fixed",
+		fixed = streets.bBox
+	},
+	tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png",{
+		name="streets_b_flashred.png",
+		animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=1.2},
+	}},
+	digiline = {
+		receptor = {},
+		wire = {rules=streets.tlDigilineRules},
+		effector = {
+			action = function(pos, node, channel, msg)
+				streets.on_digiline_receive(pos, node, channel, msg)
+			end
+		}
+	},
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", "field[channel;Channel;${channel}]")
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+			minetest.get_meta(pos):set_string("state", "Off")
+		end
+	end,
+})
+
+minetest.register_node(":streets:beacon_flashyellow",{
+	description = "Beacon",
+	drawtype="nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	groups = {cracky = 1, level = 2},
+	inventory_image = "streets_trafficlight_inv.png",
+	light_source = 11,
+	sunlight_propagates = true,
+	node_box = {
+		type = "fixed",
+		fixed = streets.bBox
+	},
+	tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png",{
+		name="streets_tl_warn.png",
+		animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=1.2},
+	}},
+	digiline = {
+		receptor = {},
+		wire = {rules=streets.tlDigilineRules},
+		effector = {
+			action = function(pos, node, channel, msg)
+				streets.on_digiline_receive(pos, node, channel, msg)
+			end
+		}
+	},
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", "field[channel;Channel;${channel}]")
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+			minetest.get_meta(pos):set_string("state", "Off")
+		end
+	end,
 })
 
 minetest.register_node(":streets:trafficlight_top_extender_left_off",{
