@@ -295,6 +295,11 @@ minetest.register_alias("streets:rw_sideline","streets:mark_solid_yellow_side_li
 
 streets.register_label("Solid Yellow Side Line (rotated)","solid_yellow_side_line_rotated","streets_rw_asphalt_side.png^[transformR180",{{"streets:mark_solid_yellow_side_line"}})
 
+streets.register_label("Yellow Diagonal Lines","yellow_diagonal","streets_yellow_diagonal_lines.png",{
+		{"dye:yellow","",""},
+		{"","dye:yellow",""},
+		{"","","dye:yellow"}
+	})
 
 --Infrastructure markings
 
