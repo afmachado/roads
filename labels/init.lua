@@ -63,6 +63,12 @@ end
 
 
 --White Markings
+streets.register_label("All-White","all_white","streets_all_white.png",{
+		{"dye:white","dye:white","dye:white"},
+		{"dye:white","dye:white","dye:white"},
+		{"dye:white","dye:white","dye:white"}
+	})
+
 streets.register_label("Solid White Side Line","solid_white_side_line","streets_asphalt_side.png",{
 		{"","",""},
 		{"","",""},
