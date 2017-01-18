@@ -84,6 +84,25 @@ streets.tlDigilineRules = {
 				{x= 0, y= 1, z= 0}
 			}
 
+local function ped_on_flash_start(pos)
+	local timer = minetest.get_node_timer(pos)
+	timer:set(99,0)
+end
+
+local function ped_on_flash_end(pos,record)
+	local objs = minetest.get_objects_inside_radius(pos,1.5)
+	for _,obj in pairs(objs) do
+		if obj:get_luaentity() and obj:get_luaentity().name == "streets:pedcountdown" then
+			obj:remove()
+		end
+	end
+	if not record then return end
+	local timer = minetest.get_node_timer(pos)
+	local meta = minetest.get_meta(pos)
+	meta:set_int("flashtime",math.min(timer:get_elapsed(),99))
+	timer:stop()
+end
+
 streets.tlSwitch = function(pos,to)
 	if not pos or not to then
 		return
@@ -100,6 +119,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 	local name = minetest.get_node(pos).name
 	if msg == "OFF" then
 		if name:find("pedlight") then
+			if name == "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_end(pos,false)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_off")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_off")
@@ -118,6 +140,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		end
 	elseif msg == "GREEN" then
 		if name:find("pedlight") then
+			if name == "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_end(pos,false)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_walk")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_green")
@@ -136,6 +161,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		end
 	elseif msg == "RED" then
 		if name:find("pedlight") then
+			if name == "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_end(pos,true)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_dontwalk")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_off")
@@ -154,6 +182,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		end
 	elseif msg == "WARN" then
 		if name:find("pedlight") then
+			if name ~= "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_start(pos)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_off")
@@ -172,6 +203,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		end
 	elseif msg == "FLASHYELLOW" then
 		if name:find("pedlight") then
+			if name ~= "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_start(pos)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_flashyellow")
@@ -190,6 +224,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		end
 	elseif msg == "YELLOW" then
 		if name:find("pedlight") then
+			if name ~= "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_start(pos)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_yellow")
@@ -208,6 +245,9 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		end
 	elseif msg == "FLASHRED" then
 		if name:find("pedlight") then
+			if name ~= "streets:pedlight_top_flashingdontwalk" then
+				ped_on_flash_start(pos)
+			end
 			streets.tlSwitch(pos,"streets:pedlight_top_flashingdontwalk")
 		elseif name:find("extender_left") then
 			streets.tlSwitch(pos,"streets:trafficlight_top_extender_left_off")
@@ -893,6 +933,8 @@ minetest.register_node(":streets:trafficlight_top_extender_right_green",{
 	end,
 })
 
+
+
 minetest.register_node(":streets:pedlight_top_off",{
 	description = streets.S("Pedestrian Light"),
 	drawtype="nodebox",
@@ -1001,6 +1043,53 @@ minetest.register_node(":streets:pedlight_top_flashingdontwalk",{
 			end
 		}
 	},
+})
+
+minetest.register_entity(":streets:pedcountdown",{
+	physical = false,
+	collisionbox = {0,0,0,0,0,0},
+	visual = "upright_sprite",
+	textures = {"streets_pl_number_9l.png^streets_pl_number_9r.png"}
+})
+
+minetest.register_abm({
+	label = "Update pedestrian countdown time display",
+	nodenames = {"streets:pedlight_top_flashingdontwalk"},
+	interval = 1,
+	chance = 1,
+	catch_up = false,
+	action = function(pos,node)
+		local meta = minetest.get_meta(pos)
+		local timer = minetest.get_node_timer(pos)
+		local totaltime = meta:get_int("flashtime")
+		local timesofar = timer:get_elapsed()
+		local timeleft = math.max(0,totaltime-timesofar)
+		local objs = minetest.get_objects_inside_radius(pos,1.5)
+		for _,obj in pairs(objs) do
+			if obj:get_luaentity() and obj:get_luaentity().name == "streets:pedcountdown" then
+				obj:remove()
+			end
+		end
+		local backdir = minetest.facedir_to_dir(node.param2)
+		local frontdir = vector.multiply(backdir,-1)
+		local entpos = vector.add(vector.multiply(frontdir,-0.495),pos)
+		local entity = minetest.add_entity(entpos,"streets:pedcountdown")
+		local yaw = 0
+		if backdir.z == -1 then
+			yaw = math.pi
+		elseif backdir.x == 1 then
+			yaw = math.pi / 2
+		elseif backdir.x == -1 then
+			yaw = math.pi / -2
+		end
+		--Circles are hard...
+		entity:setyaw(yaw)
+
+		local ldigit = math.floor(timeleft/10)
+		local rdigit = timeleft % 10
+		local tex = string.format("streets_pl_number_%01dl.png^streets_pl_number_%01dr.png",ldigit,rdigit)
+		entity:set_properties({textures={tex}})
+	end
 })
 
 
