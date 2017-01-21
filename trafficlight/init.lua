@@ -75,6 +75,14 @@ streets.hbBox =	{
 	{0.0625,-0.125,0.3125,0.125,-0.0625,0.5}, --Bottom Visor, Right
 }
 
+streets.rrfbBox = {
+	{-0.375,0.05,0.5,0.375,0.3,0.75}, --Box
+
+	{-0.125, 0.125, 0.85, 0.125, 0.25, 0.75}, -- Pole Mounting Bracket
+
+	--These usually don't have visors
+}
+
 streets.tlDigilineRules = {
 				{x= 0, y= 0, z=-1},
 				{x= 0, y= 0, z= 1},
@@ -135,6 +143,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:beacon_hybrid_off")
 		elseif name:find("beacon") then
 			streets.tlSwitch(pos,"streets:beacon_off")
+		elseif name:find("rrfb") then
+			streets.tlSwitch(pos,"streets:trafficlight_rrfb_off")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_off")
 		end
@@ -155,6 +165,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 		elseif name:find("beacon_hybrid") then
 			--Not Supported
 		elseif name:find("beacon") then
+			--Not Supported
+		elseif name:find("rrfb") then
 			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_green")
@@ -177,6 +189,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:beacon_hybrid_red")
 		elseif name:find("beacon") then
 			streets.tlSwitch(pos,"streets:beacon_red")
+		elseif name:find("rrfb") then
+			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_red")
 		end
@@ -198,6 +212,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:beacon_hybrid_flashyellow")
 		elseif name:find("beacon") then
 			streets.tlSwitch(pos,"streets:beacon_flashyellow")
+		elseif name:find("rrfb") then
+			streets.tlSwitch(pos,"streets:trafficlight_rrfb_on")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_warn")
 		end
@@ -219,6 +235,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:beacon_hybrid_flashyellow")
 		elseif name:find("beacon") then
 			streets.tlSwitch(pos,"streets:beacon_flashyellow")
+		elseif name:find("rrfb") then
+			streets.tlSwitch(pos,"streets:trafficlight_rrfb_on")
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_warn")
 		end
@@ -240,6 +258,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:beacon_hybrid_yellow")
 		elseif name:find("beacon") then
 			streets.tlSwitch(pos,"streets:beacon_yellow")
+		elseif name:find("rrfb") then
+			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_yellow")
 		end
@@ -261,6 +281,8 @@ streets.on_digiline_receive = function(pos, node, channel, msg)
 			streets.tlSwitch(pos,"streets:beacon_hybrid_flashred")
 		elseif name:find("beacon") then
 			streets.tlSwitch(pos,"streets:beacon_flashred")
+		elseif name:find("rrfb") then
+			--Not Supported
 		else
 			streets.tlSwitch(pos,"streets:trafficlight_top_flashred")
 		end
@@ -1258,6 +1280,78 @@ for _,i in pairs({"","_left","_right"}) do
 	})
 end
 
+minetest.register_node(":streets:trafficlight_rrfb_off",{
+	description = streets.S("Rectangular Rapid Flashing Beacon"),
+	drawtype="nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	groups = {cracky = 1, level = 2},
+	inventory_image = "streets_rrfb_inv.png",
+	light_source = 11,
+	sunlight_propagates = true,
+	node_box = {
+		type = "fixed",
+		fixed = streets.rrfbBox
+	},
+	tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_rrfb_off.png"},
+	digiline = {
+		receptor = {},
+		wire = {rules=streets.tlDigilineRules},
+		effector = {
+			action = function(pos, node, channel, msg)
+				streets.on_digiline_receive(pos, node, channel, msg)
+			end
+		}
+	},
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", "field[channel;Channel;${channel}]")
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+			minetest.get_meta(pos):set_string("state", "Off")
+		end
+	end,
+})
+
+minetest.register_node(":streets:trafficlight_rrfb_on",{
+	drop = "streets:trafficlight_rrfb_off",
+	drawtype="nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	groups = {cracky = 1, level = 2, not_in_creative_inventory = 1},
+	light_source = 11,
+	sunlight_propagates = true,
+	node_box = {
+		type = "fixed",
+		fixed = streets.rrfbBox
+	},
+		tiles = {"streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png","streets_tl_bg.png",{
+			name="streets_rrfb_on.png",
+			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=0.75},
+		}},
+	digiline = {
+		receptor = {},
+		wire = {rules=streets.tlDigilineRules},
+		effector = {
+			action = function(pos, node, channel, msg)
+				streets.on_digiline_receive(pos, node, channel, msg)
+			end
+		}
+	},
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", "field[channel;Channel;${channel}]")
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+			minetest.get_meta(pos):set_string("state", "Off")
+		end
+	end,
+})
+
 minetest.register_node(":streets:green_arrow",{
 	description = "Straight-through green arrow",
 	drawtype="nodebox",
@@ -1340,6 +1434,15 @@ minetest.register_craft({
 	recipe = {
 		{"dye:red", "default:steel_ingot", "dye:red"},
 		{"default:steel_ingot", "dye:yellow", "default:steel_ingot"},
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
+	}
+})
+
+minetest.register_craft({
+	output = "streets:trafficlight_rrfb_off",
+	recipe = {
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		{"dye:yellow", "default:steel_ingot", "dye:yellow"},
 		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
 	}
 })
