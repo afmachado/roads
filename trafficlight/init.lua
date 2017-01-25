@@ -104,10 +104,20 @@ local function ped_on_flash_end(pos,record)
 			obj:remove()
 		end
 	end
-	if not record then return end
+	if not record then
+		timer:stop()
+		return
+	end
 	local timer = minetest.get_node_timer(pos)
 	local meta = minetest.get_meta(pos)
-	meta:set_int("flashtime",math.min(timer:get_elapsed(),99))
+	local lastflashtime = meta:get_int("lastflashtime")
+	local twoflashesago = meta:get_int("twoflashesago")
+	local flashtime = math.min(timer:get_elapsed(),99)
+	meta:set_int("twoflashesago",lastflashtime)
+	meta:set_int("lastflashtime",flashtime)
+	if math.abs(twoflashesago-lastflashtime) + math.abs(lastflashtime-flashtime) < 3 then
+		meta:set_int("flashtime",flashtime)
+	end
 	timer:stop()
 end
 
@@ -1071,7 +1081,7 @@ minetest.register_entity(":streets:pedcountdown",{
 	physical = false,
 	collisionbox = {0,0,0,0,0,0},
 	visual = "upright_sprite",
-	textures = {"streets_pl_number_9l.png^streets_pl_number_9r.png"}
+	textures = {"streets_pl_number_0l.png"}
 })
 
 minetest.register_abm({
